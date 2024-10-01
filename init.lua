@@ -157,6 +157,10 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 15
 
+-- CUSTOM CONFIG
+vim.g.netrw_sizestyle = 'H'
+vim.g.netrw_liststyle = 3
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -242,29 +246,70 @@ require('lazy').setup({
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'folke/zen-mode.nvim',
   {
+    'danymat/neogen',
+    -- config = true,
+    opts = {
+      noremap = true,
+      silent = true,
+      python = {
+        template = {
+          annotation_convention = 'google',
+        },
+      },
+    },
+    cmd = { 'Neogen' },
+    keys = {
+      {
+        '<leader>dc',
+        function()
+          require('neogen').generate()
+        end,
+        desc = '[D]ocument [C]ode',
+      },
+    },
+  },
+  { 'prichrd/netrw.nvim', opts = {} },
+  {
     'pmizio/typescript-tools.nvim',
     dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
     opts = {},
   },
   {
     'folke/trouble.nvim',
-    config = function()
-      require('trouble').setup {
-        icons = true,
-      }
-
-      vim.keymap.set('n', '<leader>tt', function()
-        require('trouble').toggle()
-      end)
-
-      vim.keymap.set('n', '[t', function()
-        require('trouble').next { skip_groups = true, jump = true }
-      end)
-
-      vim.keymap.set('n', ']t', function()
-        require('trouble').previous { skip_groups = true, jump = true }
-      end)
-    end,
+    opts = {},
+    cmd = 'Trouble',
+    keys = {
+      {
+        '<leader>tt',
+        '<cmd>Trouble diagnostics toggle<cr>',
+        desc = 'Diagnostics (Trouble)',
+      },
+      {
+        '<leader>tT',
+        '<cmd>Trouble diagnostics toggle filter.buf=0<cr>',
+        desc = 'Buffer Diagnostics (Trouble)',
+      },
+      {
+        '<leader>ts',
+        '<cmd>Trouble symbols toggle focus=false<cr>',
+        desc = 'Symbols (Trouble)',
+      },
+      {
+        '<leader>tl',
+        '<cmd>Trouble lsp toggle focus=false win.position=right<cr>',
+        desc = 'LSP Definitions / references / ... (Trouble)',
+      },
+      {
+        '<leader>tL',
+        '<cmd>Trouble loclist toggle<cr>',
+        desc = 'Location List (Trouble)',
+      },
+      {
+        '<leader>tQ',
+        '<cmd>Trouble qflist toggle<cr>',
+        desc = 'Quickfix List (Trouble)',
+      },
+    },
   },
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -686,7 +731,7 @@ require('lazy').setup({
         -- languages here or re-enable it for the disabled ones.
         local disable_filetypes = { c = true, cpp = true }
         return {
-          timeout_ms = 500,
+          timeout_ms = 1000,
           lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
         }
       end,
