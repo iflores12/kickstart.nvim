@@ -311,6 +311,21 @@ require('lazy').setup({
       },
     },
   },
+  {
+    'luckasRanarison/tailwind-tools.nvim',
+    name = 'tailwind-tools',
+    build = ':UpdateRemotePlugins',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-telescope/telescope.nvim', -- optional
+      'neovim/nvim-lspconfig', -- optional
+    },
+    opts = {}, -- your configuration
+  },
+  {
+    'windwp/nvim-ts-autotag',
+    opts = {},
+  },
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
@@ -653,6 +668,9 @@ require('lazy').setup({
         -- gopls = {},
         pyright = {},
         rust_analyzer = {},
+        tailwindcss = {},
+        eslint = {},
+        prettierd = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -942,6 +960,7 @@ require('lazy').setup({
         'javascript',
         'css',
         'typescript',
+        'tsx',
         'yaml',
         'terraform',
         'sql',
